@@ -1,2 +1,2 @@
 # SPLab
-C and Assembly languages
+C and Assembly languages in Ben Gurion University
