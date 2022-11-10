@@ -1,9 +1,9 @@
-# docker build -t prac .
-# docker run -it -v $PWD:/prac --name prac prac
-# docker start -i prac
+# docker build -t lab .
+# docker run -it -v $PWD:/lab --name lab lab
+# docker start -i lab
 FROM debian
 
-WORKDIR /prac
+WORKDIR /SPLAB
 
 RUN apt-get update
 
