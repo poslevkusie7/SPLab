@@ -10,5 +10,7 @@ char* map(char *array, int array_length, char (*f) (char)) {
 }
 
 int main () {
+    map()
+    free();
     return 0;
 }
