@@ -1,18 +1,15 @@
 #include <stdio.h>
-
+#include <stdlib.h>
 int main () {
-    //FILE *fp =  fopen("file.txt","r");
-    char c;
-    while (scanf("%c", &c) == 1) {
-        //c = fgetc(fp);
-        //if (c == feof()) { break; }
+    char c = getc(stdin);
+    while (c != '\n') {
         if ('a' <= c && c <= 'z') {
             c += 'A' - 'a';
         }
         printf("%c", c);
-        
+        c = getc(stdin);
     }
-   //fclose(fp);
+    printf("\n");
    return 0;
 }
 

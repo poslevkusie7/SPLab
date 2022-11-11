@@ -1,70 +1,41 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include<sys/types.h>
-#include<sys/stat.h>
-#include<unistd.h> 
-#include <fcntl.h>  
+#include <string.h>
 
 int main (int argc, char **argv) {
-    char c;
+    char c = getc(stdin);
     int adrr;
-   int fd = open("file.txt", O_RDWR | O_CREAT | O_TRUNC | O_EXCL, 0777);
-    if (argc == 2) {        
-        while (scanf("%c", &c) == 1) {
-            write(fd, &c, 1);
-            adrr = (int)c;
-            fprintf(stderr, "%x ", c);
+    int j = 1;
+    if (argc == 2 && (strcmp(argv[j], "-D") == 0)) {
+        while (c != '\n') {
+            adrr = (int) c;
+            fprintf(stderr, "%x ", adrr); // дебаг в стдерр
             if ('a' <= c && c <= 'z') {
                 c += 'A' - 'a';
-            } 
-            adrr = (int)c;
-            fprintf(stderr, "%x\n", c);
+            }
+            adrr = (int) c;
+            fprintf(stderr, "%x\n", adrr); // дебаг в стдерр
+            printf("%c", c); //норм строка в капсе
+            c = getc(stdin);    
         }
-        while(read(fd, &c, 1)) {
-            printf("%c", c);
-        }
-       
-        
+        printf("\n");
+
     }
+    else if (argc > 1) {return 1;}
     else {
-        while (scanf("%c", &c) == 1) {
-        
-        if ('a' <= c && c <= 'z') {
-            c += 'A' - 'a';
+         while (c != '\n') {
+            if ('a' <= c && c <= 'z') {
+                c += 'A' - 'a';
+            }
+            printf("%c", c); //норм строка в капсе
+            c = getc(stdin);    
         }
-        printf("%c", c);
-    }
-    }
-   return 0;
-}
-
-
-
-
-/*
-int main (int argc, char **argv) {
-    char c;
-    int fd;
-    int adrr;
-    while (scanf("%c", &c) == 1) {
-        if (argc == 2) {
-        adrr = (int)c;
-        printf("%x ", adrr);
-        if ('a' <= c && c <= 'z') {
-            c += 'A' - 'a';
-        } 
-        adrr = (int)c;
-        printf("%x\n", c);
-        }
-        write(fd, &c, 1);
-    }
-    while(read(fd, &c, 1))
-    {
-        if ('a' <= c && c <= 'z') {
-            c += 'A' - 'a';
-        }
-        printf("%c", c);
+        printf("\n");
     }
     return 0;
 }
-*/
+
+
+
+
+
