@@ -7,17 +7,38 @@ typedef struct virus {
     unsigned char* sig; 
 } virus;
 
+virus *ptr = NULL;
+
 void printVirus(virus* virus, FILE* output);
 
-void printVirus(virus* virus, FILE* output) {
-    fwrite(&virus->virusName, 16, sizeof(char), output);
-    fwrite(' ', 1, sizeof(char), output);
-    fwrite(&virus->SigSize, 1, sizeof(unsigned short), output);
-    fwrite(' ', 1, sizeof(char), output);
-    fwrite(&virus, 16, sizeof(unsigned char), output);
-    fwrite('\n', 1, sizeof(char), output);
+virus* readVirus(FILE* input);
+
+
+virus* readVirus(FILE* input) {
+    virus* virus;
+    fread(virus->virusName, 16, sizeof(char), input);
+    fread(virus->SigSize, 1, sizeof(unsigned short), input);
+    return virus;
 }
 
-int main () {
+void printVirus(virus* virus, FILE* output) {
+    char c = ' ';
+    fwrite(&virus->virusName, 16, sizeof(char), output);
+    fwrite(&c, 1, sizeof(char), output);
+    fwrite(&virus->SigSize, 1, sizeof(unsigned short), output);
+    fwrite(&c, 1, sizeof(char), output);
+    c = '\n';
+    fwrite(&virus->sig, 16, sizeof(unsigned char), output);
+    fwrite(&c, 1, sizeof(char), output);
+}
+
+int main (int argc, char **argv) {
+    FILE *fd;
+    virus vir;
+    fd = fopen(argv[1], "rw+");
+    while (!feof(fd)) {
+        readVirus(fd);
+        printVirus(vir.sig, fd);
+    }
     return 0;
 }
