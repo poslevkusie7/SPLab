@@ -16,7 +16,7 @@ int main (int argc , char* argv[], char* envp[])
 {
   /*Complete the task here*/
   for (int i = 1; i < argc; i++) {
-    syscall(4, 1, argv[i], sizeof(argv[i]) - 1);
+    syscall(4, 1, argv[i], strlen();
     syscall(4, 1, " ", sizeof(char));
   }
     syscall(4, 1, "\n", sizeof(char));
