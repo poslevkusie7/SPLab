@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
-
 int main (int argc, char **argv) {
-    int c = getchar();
+    for (int i = 0; i < argc; i++) {
+        printf("argv[%d] = %s",i, argv[i]);
+    }
     int adrr;
     if ((strcmp(argv[1], "-D") == 0)) {
+        int c = getchar();      
         while (c != '\n') {
             adrr = (int) c;
             fprintf(stderr, "%x ", adrr); // дебаг в стдерр
@@ -23,7 +23,8 @@ int main (int argc, char **argv) {
         printf("\n");
 
     }
-    else if ((argv[1][0] == '+') && (argv[1][1] == 'e')) {        
+    else if ((argv[1][0] == '+') && (argv[1][1] == 'e')) {  
+        int c = getchar();      
         int j = 2;
         while (c != -1) {
             printf("while\n");
@@ -42,6 +43,7 @@ int main (int argc, char **argv) {
         return 0;
     }
     else if ((argv[1][0] == '-') && (argv[1][1] == 'e')) {
+        int c = getchar();
         int j = 2;
         while (c != -1) {
             if (c == '\n') {   
@@ -57,67 +59,39 @@ int main (int argc, char **argv) {
         }
         return 0;
     }
-
+/*
     else if ((argv[1][0] == '-') && (argv[1][1] == 'i')) {
         FILE *input;
         char c;
-        char *buff;
-        buff = (char*)malloc(sizeof(char));
-        input = fopen("input1", "rb");
+        input = fopen("input.txt", "r+");
+        printf("ERROR0\n");
         fread(&c, sizeof(char), 1, input);
-        unsigned counter = 1;
-        while (c != '\n'){
-            fread(&c, sizeof(char), 1, input);
-            counter++;
-            buff = (char*)realloc(buff, sizeof(char) * (counter));
-            buff[counter ] = c;
-        }
-
-        if ((argv[2][0] == '+') && (argv[2][1] == 'e')) { 
-        char elem = buff[0];       
-        int j = 2;
-        int ind = 0;
-        while (elem != -1) {
-            printf("while\n");
-            if (elem == '\n') {  
-                printf("\n");
-                j = 2; 
-                elem = buff[ind];     
-                continue;
-                ind++;
-            }
-            elem = elem + (argv[2][j] - '0');
-            printf("%c", c);
-            elem = buff[ind];    
-            ind++;
-            if (elem == EOF) {break;}
-            j++;
-        }
-        return 0;
-        }
-        else if ((argv[2][0] == '-') && (argv[2][1] == 'e')) {
-            char elem = buff[0];       
+        printf("ERROR\n");
+        if ((argv[2][0] == '+') && (argv[2][1] == 'e')) {
+            printf("ERROR1\n");
+            int c = getchar();      
             int j = 2;
-            int ind = 0;
-            while (elem != -1) {
-                if (elem == '\n') {   
+            while (c != -1) {
+                printf("while\n");
+                if (c == '\n') {  
                     printf("\n");
-                    j = 2;
-                    elem = buff[ind]; 
-                    ind++;    
+                    j = 2; 
+                    fread(&c, sizeof(char), 1, input);;     
                     continue;
                 }
-                elem = elem - (argv[1][j] - '0');
+                c = c + (argv[1][j] - '0');
                 printf("%c", c);
-                elem = buff[ind];    
-                ind++;
+                c = getchar();    
+                if (c == EOF) {break;}
                 j++;
             }
-            return 0;
         }
+    printf("ERROR2\n");
     }
+*/
 
     else if (argc == 1){
+        int c = getchar();
          while (c != '\n') {
             if ('a' <= c && c <= 'z') {
                 c += 'A' - 'a';
