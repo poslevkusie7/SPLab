@@ -14,7 +14,7 @@ void err(char *str, int num) {
 int main (int argc, char **argv) {
     int dFlag = 0;
     int pip[2], s1, s2;
-    pid_t pid1, pid2;
+    int pid1, pid2;
     
     if ((argc > 1) && (!strcmp(argv[1], "-d"))) 
         dFlag = 1;
@@ -35,7 +35,9 @@ int main (int argc, char **argv) {
         close(pip[1]);
         if (dFlag) 
             err("child1>going to execute cmd: ls -l", -1);
-        execlp( "/bin/ls", "ls", "-l", NULL);
+        char * command = "ls";
+        char * argument_list[] = {"ls", "-l", NULL};
+        execvp(command, argument_list);
         exit(1);
     }
 
@@ -58,7 +60,9 @@ int main (int argc, char **argv) {
         close(pip[0]);
         if (dFlag) 
             err("child2>going to execute cmd: tail -n 2", -1);
-        execlp("/bin/tail", "tail", "-n", "2", NULL);
+        char * command = "tail";
+        char * argument_list[] = {"tail", "-n", "2", NULL};
+        execvp(command, argument_list);
         exit(1);
     }
 

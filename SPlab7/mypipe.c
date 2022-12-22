@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+
 #define MSGSIZE 16
 
   
-int main()
+int main(void)
 {
     char* msg1 = "hello, world #1";
 
@@ -18,7 +19,7 @@ int main()
         close(p[0]);
         write(p[1], msg1, MSGSIZE);
         close(p[1]);
-        wait(NULL);
+        //wait(NULL);
     }
 
     close(p[1]);
