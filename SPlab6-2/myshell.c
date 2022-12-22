@@ -30,6 +30,32 @@ void execute(cmdLine *pCmdLine, int dFlag) {
                     fprintf(stderr, "ex.c. = %s\n", pCmdLine->arguments[0]);
                 }
         }
+
+        else if (pCmdLine->next) {
+            int pipes[2];
+            pid_t pid1, pid2;
+            if (pipe(pipes) == -1) {
+                exit(1);
+            }
+            if ((pid1 = fork()) == 0) {
+                dup2(pipes[1], 1);
+                close(pipes[0]);
+                close(pipes[1]);
+                execvp(pCmdLine->arguments[0], pCmdLine->arguments);
+            }
+            if ((pid2 = fork()) == 0) {
+                pCmdLine = pCmdLine->next;
+                dup2(pipes[0], 0);
+                close(pipes[0]);
+                close(pipes[1]);
+                execvp(pCmdLine->arguments[0], pCmdLine->arguments);
+            }
+            close(pipes[0]);
+            close(pipes[1]);
+            waitpid(pid1, NULL, 0);
+            waitpid(pid2, NULL, 0);
+            break;
+        }
         else {
 
             int status;
