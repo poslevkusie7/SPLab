@@ -1,4 +1,10 @@
 CFLAGS=-O2 -ftrapv -fsanitize=undefined -Wall -std=gnu11 -lm -g
+all: task0 task2 solution myshell.o LineParser.o 
+task0:
+	gcc -g -Wall -o task0.o task0.c 
+
+task2:
+	gcc -g -Wall -o task2.o task2.c 
 
 solution: myshell.o LineParser.o 
 	gcc myshell.o LineParser.o -o solution $(CFLAGS)
