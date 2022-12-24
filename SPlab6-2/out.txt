@@ -1,8 +1,2 @@
-LineParser.c
-LineParser.h
-LineParser.o
-Makefile
-in.txt
-myshell.c
 myshell.o
 solution

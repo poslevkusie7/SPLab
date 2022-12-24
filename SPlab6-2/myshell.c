@@ -30,7 +30,8 @@ void execute(cmdLine *pCmdLine, int dFlag) {
                     fprintf(stderr, "ex.c. = %s\n", pCmdLine->arguments[0]);
                 }
         }
-
+// почемуто программа не завершается, надо проверить закрытие stdin,
+// stdout если такой тест: cat < in.txt | tail -n 2 > out.txt
         else if (pCmdLine->next) {
             int pipes[2];
             pid_t pid1, pid2;
@@ -38,6 +39,16 @@ void execute(cmdLine *pCmdLine, int dFlag) {
                 exit(1);
             }
             if ((pid1 = fork()) == 0) {
+                if (pCmdLine->inputRedirect != NULL) {
+                    int fd = open(pCmdLine->inputRedirect, O_RDONLY);
+                    dup2(fd, 0);
+                    close(fd);
+                }
+                if (pCmdLine->outputRedirect != NULL) {
+                    int fd = open(pCmdLine->outputRedirect, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+                    dup2(fd, 1);
+                    close(fd);
+                }
                 dup2(pipes[1], 1);
                 close(pipes[0]);
                 close(pipes[1]);
@@ -45,6 +56,16 @@ void execute(cmdLine *pCmdLine, int dFlag) {
             }
             if ((pid2 = fork()) == 0) {
                 pCmdLine = pCmdLine->next;
+                if (pCmdLine->inputRedirect != NULL) {
+                    int fd = open(pCmdLine->inputRedirect, O_RDONLY);
+                    dup2(fd, 0);
+                    close(fd);
+                }
+                if (pCmdLine->outputRedirect != NULL) {
+                    int fd = open(pCmdLine->outputRedirect, O_WRONLY | O_CREAT | O_TRUNC, 0666);
+                    dup2(fd, 1);
+                    close(fd);
+                }
                 dup2(pipes[0], 0);
                 close(pipes[0]);
                 close(pipes[1]);
