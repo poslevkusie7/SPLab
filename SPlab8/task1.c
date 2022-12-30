@@ -3,12 +3,6 @@
 #include <string.h>
 #include <unistd.h>
 
-/*how can I check if addr value lenght location is correct or not?
- do I need to add smth debug checks its dont written in task correctly
- 
- Also its impossible to read or execute this files with out a programm. (permission denied)
- */
-
 typedef struct {
     char debug_mode;
     char file_name[128];
@@ -75,7 +69,6 @@ void setUnitSize (state* s){
             printf("Debug: error: unit size %d not valid\n", size);
     }
 }
-//и тут тоже дабаг нужен в теории (хотя по условию я все сделал вроде)
 void loadIntoMemory (state* s) {
     int location, length;
     if (!strcmp(s->file_name, "")) {
@@ -115,7 +108,7 @@ void toggleDisplayMode (state* s) {
         printf("Display flag now off, decimal representation\n");
     }
 }
-// надо понять в какой момент делать \n
+
 void memoryDisplay (state* s) {
     int address, length;
     printf("Please enter <address> <length>\n");
@@ -123,26 +116,19 @@ void memoryDisplay (state* s) {
     if (s->notation) {
         printf("Hexadecimal\n");
         printf("===========\n");
-        for (int i = address; i < length * s->unit_size; i++) {
-            printf("%x", s->mem_buf[i]);
-            if (i % s->unit_size == 0) {
-                printf("\n");
-            }
+        for (int i = address; i < length * s->unit_size; i = i + s->unit_size) {
+            printf("%x\n", s->mem_buf[i]);
         }
     }
     else {
         printf("Decimal\n");
         printf("=======\n");
-        for (int i = address; i < length * s->unit_size; i++) {
-            printf("%d", s->mem_buf[i]);
-            if (i % s->unit_size == 0) {
-                printf("\n");
-            }
+        for (int i = address; i < length * s->unit_size; i = i + s->unit_size) {
+            printf("%d\n", s->mem_buf[i]);
         }
     }
 }
-//начиная с этой функци надо доабвлять поверки на дебаг, про размеры,
-// что я писал в начале в комменте
+
 void saveIntoFile (state* s) {
     int sadrr, tl, length;
     if (!strcmp(s->file_name, "")) {
