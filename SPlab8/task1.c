@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <fcntl.h>
 typedef struct {
     char debug_mode;
     char file_name[128];
@@ -75,8 +75,8 @@ void loadIntoMemory (state* s) {
         printf("Error: file name is empty\n");
     }
     else {
-        FILE *fd;
-        if (!(fd = fopen(s->file_name, "r"))) {
+        int fd;
+        if (!(fd = open(s->file_name, O_RDONLY))) {
             printf("Error: file isnt opening\n");
         }
         else {
@@ -85,8 +85,8 @@ void loadIntoMemory (state* s) {
             if (s->debug_mode) {
                 printf("Debug: file name is %s\n", s->file_name);
             }
-            fseek(fd, location, SEEK_SET);
-            int ret = fread(s->mem_buf, s->unit_size, length, fd);
+            lseek(fd, location, SEEK_SET);
+            int ret = read(fd, s->mem_buf, length);
             if (ret < 0) 
                 printf("Error: error while reading from file %s\n", s->file_name);
             else {
@@ -94,7 +94,7 @@ void loadIntoMemory (state* s) {
                 printf("Loaded %d units into memory\n", length);
             }
         }
-        fclose(fd);
+        close(fd);
     }
 }
 
@@ -135,17 +135,17 @@ void saveIntoFile (state* s) {
         printf("Error: file name is empty\n");
     }
     else {
-        FILE *fd;
-        if (!(fd = fopen(s->file_name, "r+"))) {
+        int fd;
+        if (!(fd = open(s->file_name, O_RDWR))) {
             printf("Error: file isnt opening\n");
         }
         else {
             printf("Please enter <source-address> <target-location> <length>\n");
             scanf("%x %x %d", &sadrr, &tl, &length);
-            fseek(fd, tl, SEEK_SET);
-            fwrite(s->mem_buf, s->unit_size, length, fd);
+            lseek(fd, tl, SEEK_SET);
+            write(fd, s->mem_buf, length);
         }
-    fclose(fd);
+    close(fd);
     }
 }
 
@@ -154,8 +154,8 @@ void memoryModify (state* s) {
         printf("Error: file name is empty\n");
     }
     else {
-        FILE *fd;
-        if (!(fd = fopen(s->file_name, "r+"))) {
+        int fd;
+        if (!(fd = open(s->file_name, O_RDWR))) {
             printf("Error: file isnt opening\n");
         }
         else {
@@ -165,10 +165,10 @@ void memoryModify (state* s) {
             if (s->debug_mode) {
                 printf("location = %x\nval = %x\n", location, val);
             }
-            fseek(fd, location, SEEK_SET);
-            fwrite(&val, s->unit_size, sizeof(int), fd);
+            lseek(fd, location, SEEK_SET);
+            write(fd, &val, sizeof(int));
         }
-    fclose(fd);
+    close(fd);
     }
 }
 
